@@ -6,6 +6,11 @@ The browser contains no product catalog or GitHub API integration: technical
 data is generated from checksum-validated, pinned upstream files before Vite
 builds the site.
 
+## Logo removal
+
+The KRAB logo was removed after OpenInfra Foundation flagged it as a copyright
+infringement. KRAB now uses its name without that logo.
+
 ## Data flow
 
 1. `upstream/sources.lock.yaml` pins repository commits, paths, and checksums.
@@ -114,7 +119,7 @@ Install the published pre-check chart to check every Linux node in the cluster:
 ```sh
 helm install krab-precheck \
   oci://ghcr.io/kata-containers/krab-precheck \
-  --version 0.3.0 \
+  --version 0.3.1 \
   --timeout 35m \
   --namespace krab-precheck --create-namespace &&
 kubectl --namespace krab-precheck logs \
@@ -279,7 +284,7 @@ For the GPU OR selection instead, use `anyOf: [gpu-cc, gpu-ppcie]` under
 ```sh
 helm upgrade --install krab-conformance \
   oci://ghcr.io/kata-containers/krab-precheck \
-  --version 0.3.0 \
+  --version 0.3.1 \
   --namespace krab-conformance --create-namespace \
   --timeout 35m --values conformance-values.yaml
 ```
@@ -474,7 +479,7 @@ For a prerelease, specify its version explicitly when installing with Helm:
 
 ```sh
 helm upgrade --install krab oci://ghcr.io/kata-containers/krab \
-  --version 0.3.0 \
+  --version 0.3.1 \
   --namespace kata-system \
   --create-namespace \
   --values values.yaml

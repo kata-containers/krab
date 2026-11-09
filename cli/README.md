@@ -84,16 +84,16 @@ retain existing component switches, proxies, snapshotter settings, and chart
 overrides.
 
 The terminal interface uses Ratatui and Crossterm, with a persistent live
-configuration panel and validation status. The original webpage logo appears as
-a small image beside KRAB in the header when the terminal supports inline
-graphics (Kitty, iTerm2, or Sixel). Text-only terminals show the KRAB title.
+configuration panel and validation status. The default header shows the KRAB
+title. An explicitly configured product profile can display its own logo when
+the terminal supports inline graphics (Kitty, iTerm2, or Sixel).
 Product profiles can apply their `theme.light` / `theme.dark` colours to the
 editor and cluster-check screens. Terminal background detection chooses the
 palette, with `COLORFGBG` as a fallback and dark as the default. Override it with
 `KRAB_THEME=light`, `KRAB_THEME=dark`, or `KRAB_THEME=auto`. Omitted colours keep
 the terminal defaults or inherit the supplied page/text colours. No palette keeps
-the existing appearance. Restart after editing the profile. This mapping is newer
-than 0.3.0; use a development build until the next release.
+the existing appearance. Restart after editing the profile. This mapping is available
+starting with KRAB 0.3.1.
 A local PNG `logo` is resolved beside the profile and shown on graphics-capable
 terminals. Remote URLs and unsupported formats keep the product's text heading.
 
