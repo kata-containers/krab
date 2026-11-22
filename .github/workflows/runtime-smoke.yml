@@ -153,6 +153,9 @@ jobs:
           sudo visudo -cf /etc/sudoers.d/krab-rke2-version
       - name: Set up Kubernetes using Kata's scripts directly
         working-directory: kata-upstream
+        env:
+          # Kata's release lookups otherwise share the runner's unauthenticated limit.
+          GH_TOKEN: ${{ github.token }}
         run: bash tests/integration/kubernetes/gha-run.sh deploy-k8s
       - name: Install KRAB and run the runtime smoke pods
         run: |
