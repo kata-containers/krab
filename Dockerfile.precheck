@@ -4,7 +4,7 @@ FROM --platform=linux/arm64 ghcr.io/kata-containers/kata-device-provisioner:0.1.
 
 # Run rustc on the builder CPU. Only the resulting checker targets other CPUs;
 # compiling Rust under QEMU made releases wait on PowerPC and s390x for minutes.
-FROM --platform=$BUILDPLATFORM rust:1.98-slim AS cross-toolchain
+FROM --platform=$BUILDPLATFORM rust:1.99-slim AS cross-toolchain
 RUN apt-get update && apt-get install -y --no-install-recommends \
     gcc-x86-64-linux-gnu gcc-aarch64-linux-gnu \
     gcc-powerpc64le-linux-gnu gcc-s390x-linux-gnu \
@@ -17,7 +17,12 @@ ENV CARGO_TARGET_X86_64_UNKNOWN_LINUX_GNU_LINKER=x86_64-linux-gnu-gcc \
     CARGO_TARGET_AARCH64_UNKNOWN_LINUX_GNU_LINKER=aarch64-linux-gnu-gcc \
     CARGO_TARGET_POWERPC64LE_UNKNOWN_LINUX_GNU_LINKER=powerpc64le-linux-gnu-gcc \
     CARGO_TARGET_S390X_UNKNOWN_LINUX_GNU_LINKER=s390x-linux-gnu-gcc \
-    RUSTFLAGS="-C target-feature=+crt-static"
+    CARGO_TARGET_X86_64_UNKNOWN_LINUX_GNU_RUSTFLAGS="-C target-feature=+crt-static" \
+    CARGO_TARGET_AARCH64_UNKNOWN_LINUX_GNU_RUSTFLAGS="-C target-feature=+crt-static" \
+    CARGO_TARGET_S390X_UNKNOWN_LINUX_GNU_RUSTFLAGS="-C target-feature=+crt-static" \
+    CARGO_TARGET_POWERPC64LE_UNKNOWN_LINUX_GNU_RUSTFLAGS="-C target-feature=+crt-static -C relocation-model=static"
+# PowerPC's glibc cross-toolchain has no rcrt1.o for static PIE. Explicitly use
+# static relocation for that target while retaining fully static linkage.
 
 FROM cross-toolchain AS preflight-builder
 ARG TARGETARCH

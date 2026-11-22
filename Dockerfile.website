@@ -1,5 +1,5 @@
 # Build once; configure each static installation with krab-profile.json at runtime.
-FROM rust:1.99.1-slim-bookworm@sha256:f2c004e3d2d8b547e8cf7ffbc29205385f4e71d23e53e4e383065db5e9f822cd AS engine
+FROM rust:1.100.0-slim-bookworm@sha256:7c7d4eb4d05b7781187a327809466cfddf29753f6defdc3d19a0e291951b7a37 AS engine
 RUN apt-get update && apt-get install -y --no-install-recommends python3 ca-certificates && rm -rf /var/lib/apt/lists/*
 RUN rustup target add wasm32-unknown-unknown
 WORKDIR /app
@@ -11,7 +11,7 @@ COPY upstream/erofs-utils-image.lock.json ./upstream/erofs-utils-image.lock.json
 COPY scripts/build-core.py ./scripts/build-core.py
 RUN python3 scripts/build-core.py --toolchain "$(rustc --version | cut -d ' ' -f 2)"
 
-FROM node:26-bookworm-slim@sha256:add5c17c14752c54d2f3d519ec46a3815684d41c33f198bcb09fb998f7dcbf68 AS website
+FROM node:26-bookworm-slim@sha256:5df79989ed685e09f0a98019db4cebfb22fb9df1a53c0161664a011f7ff6b0f1 AS website
 WORKDIR /app
 COPY package.json package-lock.json ./
 RUN npm ci
